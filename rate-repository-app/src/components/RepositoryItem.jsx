@@ -1,8 +1,8 @@
-import React from 'react';
-import { View, StyleSheet, Image, Pressable } from 'react-native';
-import * as Linking from 'expo-linking';
-import Text from './Text';
-import theme from '../theme';
+import React from 'react'
+import { View, StyleSheet, Image, Pressable } from 'react-native'
+import * as Linking from 'expo-linking'
+import Text from './Text'
+import theme from '../theme'
 
 const styles = StyleSheet.create({
   container: {
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 5,
-    marginRight: 15,
+    marginRight: 15
   },
   languageTag: {
     backgroundColor: theme.colors.primary,
@@ -49,20 +49,19 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#ffffff',
-    fontSize: 16,
+    fontSize: 16
   },
-});
+})
 
 const formatNumber = (number) => {
   if (number >= 1000) {
-    return `${(number / 1000).toFixed(1)}k`;
+    return `${(number / 1000).toFixed(1)}k`
   }
-  return number.toString();
-};
+  return number.toString()
+}
 
 const RepositoryItem = ({ item, showGitHubButton }) => (
   <View testID="repositoryItem" style={styles.container}>
-    {/* Repository Header */}
     <View style={styles.flexRow}>
       <Image source={{ uri: item.ownerAvatarUrl }} style={styles.avatar} />
       <View>
@@ -73,8 +72,6 @@ const RepositoryItem = ({ item, showGitHubButton }) => (
         </View>
       </View>
     </View>
-
-    {/* Stats Row */}
     <View style={styles.statsRow}>
       <View style={styles.statItem}>
         <Text style={styles.statText}>{formatNumber(item.stargazersCount)}</Text>
@@ -93,8 +90,6 @@ const RepositoryItem = ({ item, showGitHubButton }) => (
         <Text color="textSecondary">Rating</Text>
       </View>
     </View>
-
-    {/* GitHub Button */}
     {showGitHubButton && (
       <Pressable
         style={styles.button}
@@ -104,6 +99,6 @@ const RepositoryItem = ({ item, showGitHubButton }) => (
       </Pressable>
     )}
   </View>
-);
+)
 
-export default RepositoryItem;
+export default RepositoryItem

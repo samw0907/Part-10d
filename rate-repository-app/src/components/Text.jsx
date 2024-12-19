@@ -9,19 +9,19 @@ const styles = StyleSheet.create({
     fontWeight: theme.fontWeights.normal,
   },
   colorTextSecondary: {
-    color: theme.colors.textSecondary,
+    color: theme.colors.textSecondary
   },
   colorPrimary: {
-    color: theme.colors.primary,
+    color: theme.colors.primary
   },
   colorAppBarText: {
-    color: theme.colors.appBarText,
+    color: theme.colors.appBarText
   },
   fontSizeSubheading: {
-    fontSize: theme.fontSizes.subheading,
+    fontSize: theme.fontSizes.subheading
   },
   fontWeightBold: {
-    fontWeight: theme.fontWeights.bold,
+    fontWeight: theme.fontWeights.bold
   },
 })
 

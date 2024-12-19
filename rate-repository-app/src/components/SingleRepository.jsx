@@ -1,35 +1,37 @@
-import React from 'react';
-import { useParams } from 'react-router-native';
-import { FlatList, Text, View, StyleSheet } from 'react-native';
-import RepositoryItem from './RepositoryItem';
-import ReviewItem from './ReviewItem';
-import useRepository from '../hooks/useRepository';
+import React from 'react'
+import { useParams } from 'react-router-native'
+import { FlatList, Text, View, StyleSheet } from 'react-native'
+import RepositoryItem from './RepositoryItem'
+import ReviewItem from './ReviewItem'
+import useRepository from '../hooks/useRepository'
 
 const styles = StyleSheet.create({
   separator: {
-    height: 10,
-  },
-});
+    height: 10
+  }
+})
 
 const SingleRepository = () => {
-  const { id } = useParams();
+  const { id } = useParams()
   const { repository, fetchMore, loading } = useRepository(id, {
-    first: 5, // Number of reviews to fetch initially
-  });
+    first: 5,
+  })
 
-  if (loading) return <Text>Loading...</Text>;
-  if (!repository) return <Text>Repository not found</Text>;
+  if (loading) return <Text>Loading...</Text>
+  if (!repository) return <Text>Repository not found</Text>
 
-  const reviews = repository.reviews?.edges.map((edge) => edge.node) || [];
+  const reviews = repository.reviews?.edges.map((edge) => edge.node) || []
 
   const onEndReach = () => {
-    fetchMore();
-  };
+    fetchMore()
+  }
 
   return (
     <FlatList
       data={reviews}
-      renderItem={({ item }) => <ReviewItem review={item} />}
+      renderItem={({ item }) => (
+        <ReviewItem review={item} viewType="singleRepository" />
+      )}
       keyExtractor={({ id }) => id}
       ListHeaderComponent={() => (
         <RepositoryItem item={repository} showGitHubButton />
@@ -38,7 +40,8 @@ const SingleRepository = () => {
       onEndReached={onEndReach}
       onEndReachedThreshold={0.5}
     />
-  );
-};
+  )
+  
+}
 
-export default SingleRepository;
+export default SingleRepository

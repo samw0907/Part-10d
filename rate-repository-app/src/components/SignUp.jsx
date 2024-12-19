@@ -1,13 +1,13 @@
-import React from 'react';
-import { View, StyleSheet, TextInput, Pressable } from 'react-native';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { useNavigate } from 'react-router-native';
-import { useMutation } from '@apollo/client';
-import { CREATE_USER } from '../graphql/mutations';
-import useSignIn from '../hooks/useSignIn';
-import Text from './Text';
-import theme from '../theme';
+import React from 'react'
+import { View, StyleSheet, TextInput, Pressable } from 'react-native'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
+import { useNavigate } from 'react-router-native'
+import { useMutation } from '@apollo/client'
+import { CREATE_USER } from '../graphql/mutations'
+import useSignIn from '../hooks/useSignIn'
+import Text from './Text'
+import theme from '../theme'
 
 const styles = StyleSheet.create({
   container: {
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontWeight: 'bold',
   },
-});
+})
 
 const validationSchema = Yup.object().shape({
   username: Yup.string()
@@ -53,36 +53,31 @@ const validationSchema = Yup.object().shape({
   passwordConfirmation: Yup.string()
     .required('Password confirmation is required')
     .oneOf([Yup.ref('password')], 'Passwords must match'),
-});
+})
 
 const SignUp = () => {
-  const [createUser] = useMutation(CREATE_USER);
-  const [signIn] = useSignIn();
-  const navigate = useNavigate();
+  const [createUser] = useMutation(CREATE_USER)
+  const [signIn] = useSignIn()
+  const navigate = useNavigate()
 
   const formik = useFormik({
     initialValues: {
       username: '',
       password: '',
-      passwordConfirmation: '',
+      passwordConfirmation: ''
     },
     validationSchema,
     onSubmit: async (values) => {
-      const { username, password } = values;
+      const { username, password } = values
       try {
-        // Create the user
-        await createUser({ variables: { user: { username, password } } });
-
-        // Sign in the user after creation
-        await signIn({ username, password });
-
-        // Redirect to repositories
-        navigate('/');
+        await createUser({ variables: { user: { username, password } } })
+        await signIn({ username, password })
+        navigate('/')
       } catch (e) {
-        console.error('Error during sign up:', e);
+        console.error('Error during sign up:', e)
       }
-    },
-  });
+    }
+  })
 
   return (
     <View style={styles.container}>
@@ -96,7 +91,6 @@ const SignUp = () => {
       {formik.touched.username && formik.errors.username && (
         <Text style={styles.errorText}>{formik.errors.username}</Text>
       )}
-
       <TextInput
         style={[styles.input, formik.touched.password && formik.errors.password && styles.errorInput]}
         placeholder="Password"
@@ -108,7 +102,6 @@ const SignUp = () => {
       {formik.touched.password && formik.errors.password && (
         <Text style={styles.errorText}>{formik.errors.password}</Text>
       )}
-
       <TextInput
         style={[
           styles.input,
@@ -123,12 +116,11 @@ const SignUp = () => {
       {formik.touched.passwordConfirmation && formik.errors.passwordConfirmation && (
         <Text style={styles.errorText}>{formik.errors.passwordConfirmation}</Text>
       )}
-
       <Pressable style={styles.button} onPress={formik.handleSubmit}>
         <Text style={styles.buttonText}>Sign up</Text>
       </Pressable>
     </View>
-  );
-};
+  )
+}
 
-export default SignUp;
+export default SignUp

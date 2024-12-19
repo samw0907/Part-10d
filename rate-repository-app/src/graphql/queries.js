@@ -1,27 +1,30 @@
-import { gql } from '@apollo/client';
+import { gql } from '@apollo/client'
 
 export const ME = gql`
-  query Me($includeReviews: Boolean = false) {
-    me {
-      id
-      username
-      reviews @include(if: $includeReviews) {
-        edges {
-          node {
+query Me($includeReviews: Boolean = false) {
+  me {
+    id
+    username
+    reviews @include(if: $includeReviews) {
+      edges {
+        node {
+          id
+          text
+          rating
+          createdAt
+          repository {
             id
-            text
-            rating
-            createdAt
-            repository {
-              id
-              fullName
-            }
+            fullName
+            ownerName
+            name
           }
         }
       }
     }
   }
-`;
+}
+`
+
 
 
 export const GET_REPOSITORIES = gql`
@@ -46,7 +49,7 @@ query GetRepositories(
     }
   }
 }
-`;
+`
 
 export const GET_REPOSITORY = gql`
   query GetRepository($id: ID!, $first: Int, $after: String) {
@@ -82,7 +85,7 @@ export const GET_REPOSITORY = gql`
       }
     }
   }
-`;
+`
 
 
 

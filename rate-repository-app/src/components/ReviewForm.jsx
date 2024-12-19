@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, TextInput, Pressable } from 'react-native';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { useNavigate } from 'react-router-native';
-import { useMutation } from '@apollo/client';
-import { CREATE_REVIEW } from '../graphql/mutations';
-import { GET_REPOSITORY } from '../graphql/queries';
-import Text from './Text';
-import theme from '../theme';
+import React, { useState } from 'react'
+import { View, StyleSheet, TextInput, Pressable } from 'react-native'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
+import { useNavigate } from 'react-router-native'
+import { useMutation } from '@apollo/client'
+import { CREATE_REVIEW } from '../graphql/mutations'
+import { GET_REPOSITORY } from '../graphql/queries'
+import Text from './Text'
+import theme from '../theme'
 
 const styles = StyleSheet.create({
   container: {
     padding: 16,
-    backgroundColor: '#ffffff',
+    backgroundColor: '#ffffff'
   },
   input: {
     borderWidth: 1,
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   errorText: {
     color: '#d73a4a',
     fontSize: 12,
-    marginBottom: 10,
+    marginBottom: 10
   },
   button: {
     backgroundColor: theme.colors.primary,
@@ -37,9 +37,9 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#ffffff',
-    fontWeight: 'bold',
-  },
-});
+    fontWeight: 'bold'
+  }
+})
 
 const validationSchema = Yup.object().shape({
   ownerName: Yup.string().required('Repository owner name is required'),
@@ -48,24 +48,24 @@ const validationSchema = Yup.object().shape({
     .required('Rating is required')
     .min(0, 'Rating must be between 0 and 100')
     .max(100, 'Rating must be between 0 and 100'),
-  text: Yup.string().optional(),
-});
+  text: Yup.string().optional()
+})
 
 const ReviewForm = () => {
-  const navigate = useNavigate();
-  const [createReview] = useMutation(CREATE_REVIEW);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const navigate = useNavigate()
+  const [createReview] = useMutation(CREATE_REVIEW)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   const formik = useFormik({
     initialValues: {
       ownerName: '',
       repositoryName: '',
       rating: '',
-      text: '',
+      text: ''
     },
     validationSchema,
     onSubmit: async (values) => {
-      const { ownerName, repositoryName, rating, text } = values;
+      const { ownerName, repositoryName, rating, text } = values
 
       try {
         const { data } = await createReview({
@@ -74,30 +74,28 @@ const ReviewForm = () => {
               ownerName,
               repositoryName,
               rating: Number(rating),
-              text,
-            },
+              text
+            }
           },
-          // Explicitly refetch repository data
           refetchQueries: [
             {
               query: GET_REPOSITORY,
               variables: { id: `${ownerName}.${repositoryName}` },
             },
-          ],
-        });
+          ]
+        })
 
-        const repositoryId = data?.createReview?.repositoryId;
+        const repositoryId = data?.createReview?.repositoryId
 
         if (repositoryId) {
-          // Navigate to repository view with ensured data
-          navigate(`/repository/${repositoryId}`);
+          navigate(`/repository/${repositoryId}`)
         }
       } catch (e) {
-        console.error('Error creating review:', e.message);
-        setErrorMessage('An error occurred while creating the review. Please try again.');
+        console.error('Error creating review:', e.message)
+        setErrorMessage('An error occurred while creating the review. Please try again.')
       }
     },
-  });
+  })
 
   return (
     <View style={styles.container}>
@@ -117,7 +115,6 @@ const ReviewForm = () => {
       {formik.touched.ownerName && formik.errors.ownerName && (
         <Text style={styles.errorText}>{formik.errors.ownerName}</Text>
       )}
-
       <TextInput
         style={[
           styles.input,
@@ -131,7 +128,6 @@ const ReviewForm = () => {
       {formik.touched.repositoryName && formik.errors.repositoryName && (
         <Text style={styles.errorText}>{formik.errors.repositoryName}</Text>
       )}
-
       <TextInput
         style={[
           styles.input,
@@ -146,7 +142,6 @@ const ReviewForm = () => {
       {formik.touched.rating && formik.errors.rating && (
         <Text style={styles.errorText}>{formik.errors.rating}</Text>
       )}
-
       <TextInput
         style={styles.input}
         placeholder="Review"
@@ -155,12 +150,11 @@ const ReviewForm = () => {
         onChangeText={formik.handleChange('text')}
         onBlur={formik.handleBlur('text')}
       />
-
       <Pressable style={styles.button} onPress={formik.handleSubmit}>
         <Text style={styles.buttonText}>Create a review</Text>
       </Pressable>
     </View>
-  );
-};
+  )
+}
 
-export default ReviewForm;
+export default ReviewForm

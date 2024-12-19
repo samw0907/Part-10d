@@ -5,8 +5,8 @@ import Text from './Text'
 
 const styles = StyleSheet.create({
   tab: {
-    marginRight: 15,
-  },
+    marginRight: 15
+  }
 })
 
 const AppBarTab = ({ title, to, onPress }) => {

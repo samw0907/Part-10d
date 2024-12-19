@@ -6,7 +6,7 @@ const theme = {
     textSecondary: '#586069',
     primary: '#0366d6',
     appBarBackground: '#24292e',
-    appBarText: '#ffffff',
+    appBarText: '#ffffff'
   },
   fontSizes: {
     body: 14,
@@ -16,7 +16,7 @@ const theme = {
     main: Platform.select({
       ios: 'Arial',
       android: 'Roboto',
-      default: 'System',
+      default: 'System'
     }),
   },
   fontWeights: {

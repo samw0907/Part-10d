@@ -1,11 +1,11 @@
-import React from 'react';
-import { View, StyleSheet, TextInput, Pressable } from 'react-native';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import Text from './Text';
-import theme from '../theme';
-import useSignIn from '../hooks/useSignIn';
-import { useNavigate } from 'react-router-native';
+import React from 'react'
+import { View, StyleSheet, TextInput, Pressable } from 'react-native'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
+import Text from './Text'
+import theme from '../theme'
+import useSignIn from '../hooks/useSignIn'
+import { useNavigate } from 'react-router-native'
 
 const styles = StyleSheet.create({
   container: {
@@ -34,14 +34,14 @@ const styles = StyleSheet.create({
 const validationSchema = Yup.object().shape({
   username: Yup.string().required('Username is required'),
   password: Yup.string().required('Password is required'),
-});
+})
 
 export const SignInContainer = ({ onSubmit }) => {
   const formik = useFormik({
     initialValues: { username: '', password: '' },
     validationSchema,
     onSubmit,
-  });
+  })
 
   return (
     <View style={styles.container}>
@@ -64,25 +64,25 @@ export const SignInContainer = ({ onSubmit }) => {
         <Text style={styles.buttonText}>Sign in</Text>
       </Pressable>
     </View>
-  );
-};
+  )
+}
 
 const SignIn = () => {
-  const [signIn] = useSignIn();
-  const navigate = useNavigate();
+  const [signIn] = useSignIn()
+  const navigate = useNavigate()
 
   const handleSubmit = async (values) => {
-    const { username, password } = values;
+    const { username, password } = values
 
     try {
-      await signIn({ username, password });
+      await signIn({ username, password })
       navigate('/');
     } catch (e) {
-      console.error('Error signing in:', e);
+      console.error('Error signing in:', e)
     }
-  };
+  }
 
-  return <SignInContainer onSubmit={handleSubmit} />;
-};
+  return <SignInContainer onSubmit={handleSubmit} />
+}
 
-export default SignIn;
+export default SignIn

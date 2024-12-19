@@ -17,8 +17,8 @@ const useSignIn = () => {
   const signIn = async ({ username, password }) => {
     const { data } = await mutate({
       variables: {
-        credentials: { username, password },
-      },
+        credentials: { username, password }
+      }
     })
 
     if (data?.authenticate?.accessToken) {
@@ -26,10 +26,10 @@ const useSignIn = () => {
       await apolloClient.resetStore()
     }
 
-    return data;
+    return data
   }
 
-  return [signIn, result];
+  return [signIn, result]
 }
 
 export default useSignIn

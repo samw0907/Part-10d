@@ -1,11 +1,11 @@
-import React from 'react';
-import { View, StyleSheet, Pressable, Alert } from 'react-native';
-import Text from './Text';
-import theme from '../theme';
-import { format } from 'date-fns';
-import { useNavigate } from 'react-router-native';
-import { useMutation } from '@apollo/client';
-import { DELETE_REVIEW } from '../graphql/mutations';
+import React from 'react'
+import { View, StyleSheet, Pressable, Alert } from 'react-native'
+import Text from './Text'
+import theme from '../theme'
+import { format } from 'date-fns'
+import { useNavigate } from 'react-router-native'
+import { useMutation } from '@apollo/client'
+import { DELETE_REVIEW } from '../graphql/mutations'
 
 const styles = StyleSheet.create({
   container: {
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   content: {
-    flex: 1,
+    flex: 1
   },
   username: {
     fontWeight: 'bold',
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   },
   reviewText: {
     color: theme.colors.textPrimary,
-    marginBottom: 10,
+    marginBottom: 10
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -61,23 +61,23 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.primary,
   },
   deleteButton: {
-    backgroundColor: 'red',
+    backgroundColor: 'red'
   },
   buttonText: {
     color: '#fff',
     fontWeight: 'bold',
   },
-});
+})
 
-const ReviewItem = ({ review, refetch, showActions }) => {
-  const navigate = useNavigate();
-  const [deleteReview] = useMutation(DELETE_REVIEW);
+const ReviewItem = ({ review, refetch, showActions, viewType }) => {
+  const navigate = useNavigate()
+  const [deleteReview] = useMutation(DELETE_REVIEW)
 
   const handleViewRepository = () => {
     if (review.repository?.id) {
-      navigate(`/repository/${review.repository.id}`);
+      navigate(`/repository/${review.repository.id}`)
     }
-  };
+  }
 
   const handleDeleteReview = () => {
     Alert.alert(
@@ -89,19 +89,22 @@ const ReviewItem = ({ review, refetch, showActions }) => {
           text: 'Delete',
           onPress: async () => {
             try {
-              await deleteReview({ variables: { id: review.id } });
+              await deleteReview({ variables: { id: review.id } })
               refetch();
             } catch (error) {
-              console.error('Error deleting review:', error);
+              console.error('Error deleting review:', error)
             }
           },
           style: 'destructive',
         },
       ]
     );
-  };
+  }
 
-  const displayName = review.user?.username || 'Unknown User';
+  const heading =
+    viewType === 'myReviews'
+      ? `${review.repository?.ownerName}/${review.repository?.name}` || 'Unknown Repository'
+      : review.user?.username || 'Unknown User'
 
   return (
     <View style={styles.container}>
@@ -110,7 +113,7 @@ const ReviewItem = ({ review, refetch, showActions }) => {
           <Text style={styles.ratingText}>{review.rating}</Text>
         </View>
         <View style={styles.content}>
-          <Text style={styles.username}>{displayName}</Text>
+          <Text style={styles.username}>{heading}</Text>
           <Text style={styles.date}>
             {format(new Date(review.createdAt), 'dd.MM.yyyy')}
           </Text>
@@ -134,7 +137,7 @@ const ReviewItem = ({ review, refetch, showActions }) => {
         </View>
       )}
     </View>
-  );
-};
+  )
+}
 
-export default ReviewItem;
+export default ReviewItem
