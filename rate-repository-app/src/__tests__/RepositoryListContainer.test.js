@@ -1,11 +1,12 @@
-import React from 'react'
-import { render, screen } from '@testing-library/react-native'
-import RepositoryList from '../components/RepositoryList'
+import React from 'react';
+import { render, screen } from '@testing-library/react-native';
+import { MemoryRouter } from 'react-router'; // Import MemoryRouter for routing context
+import RepositoryList from '../components/RepositoryList';
 
 jest.mock('../hooks/useRepositories', () => ({
   __esModule: true,
   default: jest.fn(),
-}))
+}));
 
 describe('RepositoryList', () => {
   it('renders repository information correctly', () => {
@@ -50,37 +51,42 @@ describe('RepositoryList', () => {
             'WyJhc3luYy1saWJyYXJ5LnJlYWN0LWFzeW5jIiwxNTg4NjU2NzUwMDc2XQ==',
         },
       ],
-    }
+    };
 
-    const useRepositories = require('../hooks/useRepositories').default
-    useRepositories.mockReturnValue({ repositories })
+    const useRepositories = require('../hooks/useRepositories').default;
+    useRepositories.mockReturnValue({ repositories });
 
-    render(<RepositoryList />)
+    // Wrap RepositoryList with MemoryRouter to provide routing context
+    render(
+      <MemoryRouter>
+        <RepositoryList />
+      </MemoryRouter>
+    );
 
-    const repositoryItems = screen.getAllByTestId('repositoryItem')
-    expect(repositoryItems).toHaveLength(2)
+    const repositoryItems = screen.getAllByTestId('repositoryItem');
+    expect(repositoryItems).toHaveLength(2);
 
     const formatNumber = (number) => {
       if (number >= 1000) {
-        return `${(number / 1000).toFixed(1)}k`
+        return `${(number / 1000).toFixed(1)}k`;
       }
       return number.toString();
-    }
+    };
 
-    expect(repositoryItems[0]).toHaveTextContent('jaredpalmer/formik')
-    expect(repositoryItems[0]).toHaveTextContent('Build forms in React, without the tears')
-    expect(repositoryItems[0]).toHaveTextContent('TypeScript')
-    expect(repositoryItems[0]).toHaveTextContent(formatNumber(21856))
-    expect(repositoryItems[0]).toHaveTextContent(formatNumber(1619))
-    expect(repositoryItems[0]).toHaveTextContent('3')
-    expect(repositoryItems[0]).toHaveTextContent('88')
+    expect(repositoryItems[0]).toHaveTextContent('jaredpalmer/formik');
+    expect(repositoryItems[0]).toHaveTextContent('Build forms in React, without the tears');
+    expect(repositoryItems[0]).toHaveTextContent('TypeScript');
+    expect(repositoryItems[0]).toHaveTextContent(formatNumber(21856));
+    expect(repositoryItems[0]).toHaveTextContent(formatNumber(1619));
+    expect(repositoryItems[0]).toHaveTextContent('3');
+    expect(repositoryItems[0]).toHaveTextContent('88');
 
-    expect(repositoryItems[1]).toHaveTextContent('async-library/react-async')
-    expect(repositoryItems[1]).toHaveTextContent('Flexible promise-based React data loader')
-    expect(repositoryItems[1]).toHaveTextContent('JavaScript')
-    expect(repositoryItems[1]).toHaveTextContent(formatNumber(1760))
-    expect(repositoryItems[1]).toHaveTextContent(formatNumber(69))
-    expect(repositoryItems[1]).toHaveTextContent('3')
-    expect(repositoryItems[1]).toHaveTextContent('72')
-  })
-})
+    expect(repositoryItems[1]).toHaveTextContent('async-library/react-async');
+    expect(repositoryItems[1]).toHaveTextContent('Flexible promise-based React data loader');
+    expect(repositoryItems[1]).toHaveTextContent('JavaScript');
+    expect(repositoryItems[1]).toHaveTextContent(formatNumber(1760));
+    expect(repositoryItems[1]).toHaveTextContent(formatNumber(69));
+    expect(repositoryItems[1]).toHaveTextContent('3');
+    expect(repositoryItems[1]).toHaveTextContent('72');
+  });
+});
