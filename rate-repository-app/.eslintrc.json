@@ -9,12 +9,17 @@
   "parser": "@babel/eslint-parser",
   "parserOptions": {
     "requireConfigFile": false,
-    "babelOptions": {
-      "presets": ["babel-preset-expo"]
-    }
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 2021,
+    "sourceType": "module"
   },
   "env": {
-    "react-native/react-native": true
+    "react-native/react-native": true,
+    "es6": true,
+    "node": true,
+    "browser": true
   },
   "rules": {
     "react/prop-types": "off",

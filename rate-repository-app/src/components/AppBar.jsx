@@ -1,11 +1,12 @@
-import React from 'react'
-import { View, StyleSheet, ScrollView } from 'react-native'
-import Constants from 'expo-constants'
-import AppBarTab from './AppBarTab'
-import theme from '../theme'
-import useAuthStorage from '../hooks/useAuthStorage'
-import { useApolloClient, useQuery } from '@apollo/client'
-import { ME } from '../graphql/queries'
+import React from 'react';
+import { View, StyleSheet, ScrollView } from 'react-native';
+import Constants from 'expo-constants';
+import AppBarTab from './AppBarTab';
+import theme from '../theme';
+import { useQuery } from '@apollo/client';
+import { ME } from '../graphql/queries';
+import { useApolloClient } from '@apollo/client';
+import useAuthStorage from '../hooks/useAuthStorage';
 
 const styles = StyleSheet.create({
   container: {
@@ -18,19 +19,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingLeft: 10,
   },
-})
+});
 
 const AppBar = () => {
-  const authStorage = useAuthStorage()
-  const apolloClient = useApolloClient()
-  const { data } = useQuery(ME, {
-    fetchPolicy: 'cache-and-network',
-  })
+  const { data } = useQuery(ME, { fetchPolicy: 'cache-and-network' });
+  const authStorage = useAuthStorage();
+  const apolloClient = useApolloClient();
 
   const signOut = async () => {
-    await authStorage.removeAccessToken()
-    await apolloClient.resetStore()
-  }
+    await authStorage.removeAccessToken();
+    await apolloClient.resetStore(); // Clear Apollo cache
+  };
 
   return (
     <View style={styles.container}>
@@ -40,14 +39,17 @@ const AppBar = () => {
         contentContainerStyle={styles.scrollContainer}
       >
         <AppBarTab title="Repositories" to="/" />
-        {data?.me ? (
-          <AppBarTab title="Sign out" onPress={signOut} />
-        ) : (
+        {data?.me && <AppBarTab title="Create a review" to="/create-review" />}
+        {data?.me && <AppBarTab title="My reviews" to="/my-reviews" />}
+        {!data?.me && <AppBarTab title="Sign up" to="/signup" />}
+        {!data?.me ? (
           <AppBarTab title="Sign in" to="/signin" />
+        ) : (
+          <AppBarTab title="Sign out" onPress={signOut} />
         )}
       </ScrollView>
     </View>
-  )
-}
+  );
+};
 
-export default AppBar
+export default AppBar;

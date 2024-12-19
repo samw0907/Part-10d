@@ -1,28 +1,11 @@
 import { useQuery } from '@apollo/client';
 import { gql } from '@apollo/client';
+import { GET_REPOSITORIES } from '../graphql/queries';
 
-const GET_REPOSITORIES = gql`
-  query {
-    repositories {
-      edges {
-        node {
-          id
-          fullName
-          description
-          language
-          stargazersCount
-          forksCount
-          reviewCount
-          ratingAverage
-          ownerAvatarUrl
-        }
-      }
-    }
-  }
-`;
 
-const useRepositories = () => {
+const useRepositories = (variables) => {
   const { data, loading, refetch } = useQuery(GET_REPOSITORIES, {
+    variables,
     fetchPolicy: 'cache-and-network',
   });
 
