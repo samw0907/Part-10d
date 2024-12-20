@@ -3,7 +3,6 @@ import { ApolloProvider } from '@apollo/client'
 import { NativeRouter, Routes, Route } from 'react-router-native'
 
 import Main from './src/components/Main'
-import SingleRepository from './src/components/SingleRepository'
 import createApolloClient from './src/apolloClient'
 import AuthStorage from './src/utils/authStorage'
 import AuthStorageContext from './src/contexts/AuthStorageContext'

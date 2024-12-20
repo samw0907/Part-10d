@@ -1,9 +1,9 @@
 import React from 'react'
-import { useParams } from 'react-router-native'
 import { FlatList, Text, View, StyleSheet } from 'react-native'
+import { useParams } from 'react-router-native'
+import useRepository from '../hooks/useRepository'
 import RepositoryItem from './RepositoryItem'
 import ReviewItem from './ReviewItem'
-import useRepository from '../hooks/useRepository'
 
 const styles = StyleSheet.create({
   separator: {
@@ -13,9 +13,7 @@ const styles = StyleSheet.create({
 
 const SingleRepository = () => {
   const { id } = useParams()
-  const { repository, fetchMore, loading } = useRepository(id, {
-    first: 5,
-  })
+  const { repository, loading, fetchMore } = useRepository(id, { first: 5 })
 
   if (loading) return <Text>Loading...</Text>
   if (!repository) return <Text>Repository not found</Text>
@@ -29,9 +27,7 @@ const SingleRepository = () => {
   return (
     <FlatList
       data={reviews}
-      renderItem={({ item }) => (
-        <ReviewItem review={item} viewType="singleRepository" />
-      )}
+      renderItem={({ item }) => <ReviewItem review={item} />}
       keyExtractor={({ id }) => id}
       ListHeaderComponent={() => (
         <RepositoryItem item={repository} showGitHubButton />
@@ -41,7 +37,6 @@ const SingleRepository = () => {
       onEndReachedThreshold={0.5}
     />
   )
-  
 }
 
 export default SingleRepository

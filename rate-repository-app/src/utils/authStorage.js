@@ -17,12 +17,9 @@ class AuthStorage {
 
   async setAccessToken(accessToken) {
     try {
-      await AsyncStorage.setItem(
-        `${this.namespace}:accessToken`,
-        JSON.stringify(accessToken)
-      )
+      await AsyncStorage.setItem(`${this.namespace}:token`, accessToken);
     } catch (e) {
-      console.error('Error setting access token', e)
+      console.error('Error setting access token:', e);
     }
   }
 

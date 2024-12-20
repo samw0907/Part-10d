@@ -8,23 +8,18 @@ const useRepository = (id, variables) => {
   })
 
   const handleFetchMore = () => {
-    const canFetchMore =
-      !loading && data?.repository.reviews.pageInfo.hasNextPage;
-
-    if (!canFetchMore) {
-      return
+    if (data?.repository?.reviews?.pageInfo?.hasNextPage) {
+      fetchMore({
+        variables: {
+          after: data.repository.reviews.pageInfo.endCursor,
+          ...variables,
+        },
+      })
     }
-
-    fetchMore({
-      variables: {
-        after: data.repository.reviews.pageInfo.endCursor,
-        ...variables,
-      },
-    })
   }
 
   return {
-    repository: data?.repository,
+    repository: data?.repository || null,
     fetchMore: handleFetchMore,
     loading,
     ...result,

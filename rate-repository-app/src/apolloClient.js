@@ -3,12 +3,8 @@ import { setContext } from '@apollo/client/link/context'
 import Constants from 'expo-constants'
 import { relayStylePagination } from '@apollo/client/utilities'
 
-const apolloUri = Constants.manifest?.extra?.apolloUri || 'http://192.168.38.109:4000/graphql'
-
-console.log('Apollo URI:', apolloUri)
-
 const httpLink = createHttpLink({
-  uri: apolloUri
+  uri: Constants.expoConfig.extra.apolloUri,
 })
 
 const cache = new InMemoryCache({
@@ -28,27 +24,23 @@ const cache = new InMemoryCache({
 
 const createApolloClient = (authStorage) => {
   const authLink = setContext(async (_, { headers }) => {
-    try {
-      const accessToken = await authStorage.getAccessToken()
+    const token = await authStorage.getAccessToken()
 
-      return {
-        headers: {
-          ...headers,
-          authorization: accessToken ? `Bearer ${accessToken}` : ''
-        },
-      }
-    } catch (e) {
-      console.log(e)
-
-      return {
-        headers
+    return {
+      headers: {
+        ...headers,
+        authorization: token ? `Bearer ${token}` : '',
       }
     }
   })
 
   return new ApolloClient({
     link: authLink.concat(httpLink),
-    cache
+    cache,
+    defaultOptions: {
+      watchQuery: { fetchPolicy: 'cache-and-network' },
+      query: { fetchPolicy: 'cache-and-network' },
+    },
   })
 }
 
